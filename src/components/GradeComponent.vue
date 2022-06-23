@@ -67,13 +67,11 @@ export default {
         this.subjects[this.subjects.findIndex((sub) => sub.name == subjectName)].grades.push(newGrade.toFixed(2));
         this.newGrade = "";
         this.updateAllAverages();
-        this.updateOverAllAverage();
       }
     },
     deleteGrade: function(subjectName, index) {
       this.subjects[this.subjects.findIndex((sub) => sub.name == subjectName)].grades.splice(index, 1);
       this.updateAllAverages();
-      this.updateOverAllAverage();
     },
     updateAllAverages: function() {
       this.subjects.forEach(subject => {
@@ -82,7 +80,8 @@ export default {
           sum = parseFloat(sum.toString()) + parseFloat(grade.toString());
         })
         this.subjects[this.subjects.indexOf(subject)].average = sum / this.subjects[this.subjects.indexOf(subject)].grades.length;
-      })
+      });
+      this.updateOverAllAverage();
     },
     updateOverAllAverage: function() {
       let sum = 0.00;
