@@ -14,7 +14,7 @@
     <div class="row ml-2">
       <ul class="col-md-3 list-group mb-5" v-for="subject in subjects">
         <li class="list-group-item active">{{subject.name}}</li>
-        <li class="list-group-item">Durchschnitt: {{parseFloat(subject.average).toFixed(2)}}</li>
+        <li class="list-group-item">Durchschnitt: {{isNaN(parseFloat(subject.average).toFixed(2)) ? 0.00 : parseFloat(subject.average).toFixed(2)}}</li>
         <li class="list-group-item" v-for="(grades, index) in subject.grades">
           {{parseFloat(grades).toFixed(2)}}
           <button @click="deleteGrade(subject.name, index)" type="button" class="btn btn-danger m-3">X</button>
@@ -86,7 +86,9 @@ export default {
     updateOverAllAverage: function() {
       let sum = 0.00;
       this.subjects.forEach(subject => {
-        sum = parseFloat(sum.toString()) + parseFloat(subject.average.toString());
+        if (!isNaN(subject.average)) {
+          sum = parseFloat(sum.toString()) + parseFloat(subject.average.toString());
+        }
       })
       this.overallAverage = sum / this.subjects.length;
     }
