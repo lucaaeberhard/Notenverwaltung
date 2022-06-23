@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="d-flex justify-content-center">Notenverwaltungstool</h2>
 
-    <h3 class="d-flex justify-content-center mb-3 mt-3">Gesamtdurchschnitt: {{overallAverage}}</h3>
+    <h3 class="d-flex justify-content-center mb-3 mt-3">Gesamtdurchschnitt: {{Math.round(parseFloat(overallAverage)*2) /2}}</h3>
 
     <div class="input-group mb-5 w-50 mx-auto">
       <input type="text" v-model="newSubject" class="form-control" placeholder="New Subject">
