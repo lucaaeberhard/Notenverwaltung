@@ -14,10 +14,10 @@
 <div class="row ml-2">
   <ul class="col-md-3 list-group mb-5" v-for="subject in subjects">
     <li class="list-group-item active">{{subject.name}}</li>
-    <li class="list-group-item">Durchschnitt:</li>
-    <li class="list-group-item" v-for="grades in subject.grades">
-      {{grades}}
-      <button @click="deleteGrade(subject.name, grades)" type="button" class="btn btn-danger m-3">X</button>
+    <li class="list-group-item">Durchschnitt: {{subject.average}}</li>
+    <li class="list-group-item" v-for="(grades, index) in subject.grades">
+      {{grades.toFixed(2)}}
+      <button @click="deleteGrade(subject.name, index)" type="button" class="btn btn-danger m-3">X</button>
     </li>
     <li class="list-group-item">
       <div class="input-group">
@@ -41,15 +41,15 @@ export default {
   data: function() {
     return {
       subjects: [
-        {name: "GES", grades: [5, 6]},
-        {name: "M151", grades: [3.2, 5.5]},
-        {name: "M152", grades: [4.5, 5.2]},
-        {name: "M153", grades: [5.3, 4]},
-        {name: "M306", grades: [3.5, 4.9]},
-        {name: "NWS", grades: [5, 6]},
-        {name: "SPK", grades: [5, 6]},
-        {name: "SPO", grades: [5, 6]},
-        {name: "WUR", grades: [5, 6]},
+        {name: "GES", grades: [5.00, 6.00], average: 0.00},
+        {name: "M151", grades: [3.2, 5.5], average: 0.00},
+        {name: "M152", grades: [4.5, 5.2], average: 0.00},
+        {name: "M153", grades: [5.3, 4.00], average: 0.00},
+        {name: "M306", grades: [3.5, 4.9], average: 0.00},
+        {name: "NWS", grades: [5.00, 6.00], average: 0.00},
+        {name: "SPK", grades: [5.00, 6.00], average: 0.00},
+        {name: "SPO", grades: [5.00, 6.00], average: 0.00},
+        {name: "WUR", grades: [5.00, 6.00], average: 0.00},
       ],
       newSubject: "",
       newGrade: ""
@@ -58,19 +58,33 @@ export default {
   methods: {
     addSubject: function(newSubject) {
       if(newSubject != "") {
-        this.subjects.push({name: newSubject, grades: []});
+        this.subjects.push({name: newSubject, grades: [], average: 0.00});
       }
     },
     addGrade: function(newGrade, subjectName) {
         if (newGrade.toString().split('.')[0].length == 1 && newGrade.toString().split('.')[0] <= 6 && newGrade.toString().split('.')[0] > 0) {
           this.subjects[this.subjects.findIndex((sub) => sub.name == subjectName)].grades.push(newGrade.toFixed(2));
           this.newGrade = "";
+          this.updateAllAverages();
       }
       
     },
-    deleteGrade: function(subjectName, grade) {
-      this.subjects[this.subjects.findIndex((sub) => sub.name == subjectName)].grades.push();
+    deleteGrade: function(subjectName, index) {
+      this.subjects[this.subjects.findIndex((sub) => sub.name == subjectName)].grades.splice(index, 1);
+      this.updateAllAverages();
+    },
+    updateAllAverages: function() {
+      this.subjects.forEach(subject => {
+        let sum = 0.00;
+        subject.grades.forEach(grade => {
+          sum = parseFloat(sum.toString()) + parseFloat(grade.toString());
+        })
+        this.subjects[this.subjects.indexOf(subject)].average = sum / this.subjects[this.subjects.indexOf(subject)].grades.length;
+      })
     }
+  },
+  beforeMount() {
+    this.updateAllAverages();
   }
 }
 </script>
