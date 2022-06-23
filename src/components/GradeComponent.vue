@@ -14,9 +14,9 @@
 <div class="row ml-2">
   <ul class="col-md-3 list-group mb-5" v-for="subject in subjects">
     <li class="list-group-item active">{{subject.name}}</li>
-    <li class="list-group-item">Durchschnitt: {{subject.average}}</li>
+    <li class="list-group-item">Durchschnitt: {{parseFloat(subject.average).toFixed(2)}}</li>
     <li class="list-group-item" v-for="(grades, index) in subject.grades">
-      {{grades.toFixed(2)}}
+      {{parseFloat(grades).toFixed(2)}}
       <button @click="deleteGrade(subject.name, index)" type="button" class="btn btn-danger m-3">X</button>
     </li>
     <li class="list-group-item">
